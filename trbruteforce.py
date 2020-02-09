@@ -33,6 +33,7 @@ def brute_force_transpose(ct,silent = False):
     If threshold is met, prompt user verification.
 
     ct - the ciphertext
+    silent - flag to only display matches
     """
     for i in range(1, len(ct)+1):
         decrypted = decryptMessage(i, ct)
