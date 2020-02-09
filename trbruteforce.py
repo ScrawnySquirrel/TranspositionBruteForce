@@ -34,7 +34,6 @@ def brute_force_transpose(ct):
     ct - the ciphertext
     """
     for i in range(1, len(ct)+1):
-        print(i)
         decrypted = decryptMessage(i, ct)
         flag = FindWord(decrypted)
 
@@ -44,7 +43,7 @@ def brute_force_transpose(ct):
             print('Found word: ', decrypted)
             uinput = (input("Is this the correct plaintext? [y/n]: ")).lower()
             if (uinput != "" and uinput[0] == 'y'):
-                print("neato")
+                print("Key size: {}".format(i))
                 return
     input("No match found for: \"{}\"".format(ct))
 
