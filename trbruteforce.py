@@ -45,6 +45,7 @@ def brute_force_transpose(ct,silent = False, outfile = None, nointeract = False)
 
     foundmatch = False
 
+    output_fp("Decrypting: {}".format(ct), outfile)
     for i in range(1, len(ct)+1):
         decrypted = decryptMessage(i, ct)
         flag = FindWord(decrypted)
@@ -65,7 +66,7 @@ def brute_force_transpose(ct,silent = False, outfile = None, nointeract = False)
                     return
     output_fp("", outfile)
     if foundmatch is False:
-        output_fp("No match found for: \"{}\"\n".format(ct), outfile, False if silent is True else True)
+        output_fp("No match found for: {}\n".format(ct), outfile, False if silent is True else True)
 
 def output_fp(msg, ofile = None, fp_out = False):
     """
