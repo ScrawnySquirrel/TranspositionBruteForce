@@ -15,17 +15,18 @@ def main():
     group.add_argument('-i', '--input', help='name of the input text file')
     # TODO: Implement output to file
     parser.add_argument('-o', '--output', help='name of the output text file')
+    parser.add_argument('-s', '--silent', help='do not display failed attempts', action='store_true')
     args = parser.parse_args()
 
     # Handle command line or file logic
     if args.input is not None:
         ct_file = open(args.input, "r")
         for line in ct_file:
-            brute_force_transpose(line[:-1])
+            brute_force_transpose(line[:-1], args.silent)
     else:
-        brute_force_transpose(args.ciphertext)
+        brute_force_transpose(args.ciphertext, args.silent)
 
-def brute_force_transpose(ct):
+def brute_force_transpose(ct,silent = False):
     """
     Attempt to break the ciphertext by performing transposition decryption cipher from length 1 to ciphertext length.
     Check at each iteration the human readability threshold.
@@ -37,9 +38,9 @@ def brute_force_transpose(ct):
         decrypted = decryptMessage(i, ct)
         flag = FindWord(decrypted)
 
-        if flag == None:
+        if flag is None and silent is False:
             print('Failed to find: %s' % (decrypted))
-        else:
+        elif flag is not None:
             print('Found word: ', decrypted)
             uinput = (input("Is this the correct plaintext? [y/n]: ")).lower()
             if (uinput != "" and uinput[0] == 'y'):
