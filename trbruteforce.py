@@ -13,20 +13,24 @@ def main():
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-c', '--ciphertext', help='the ciphertext to decode')
     group.add_argument('-i', '--input', help='name of the input text file')
-    # TODO: Implement output to file
     parser.add_argument('-o', '--output', help='name of the output text file')
     parser.add_argument('-s', '--silent', help='do not display failed attempts', action='store_true')
     args = parser.parse_args()
+
+
+    # Output file
+    if args.output is not None:
+        out_file = open(args.output, "w")
 
     # Handle command line or file logic
     if args.input is not None:
         ct_file = open(args.input, "r")
         for line in ct_file:
-            brute_force_transpose(line[:-1], args.silent)
+            brute_force_transpose(line[:-1], args.silent, out_file if args.output else None)
     else:
-        brute_force_transpose(args.ciphertext, args.silent)
+        brute_force_transpose(args.ciphertext, args.silent, out_file if args.output else None)
 
-def brute_force_transpose(ct,silent = False):
+def brute_force_transpose(ct,silent = False, outfile = None):
     """
     Attempt to break the ciphertext by performing transposition decryption cipher from length 1 to ciphertext length.
     Check at each iteration the human readability threshold.
@@ -34,20 +38,38 @@ def brute_force_transpose(ct,silent = False):
 
     ct - the ciphertext
     silent - flag to only display matches
+    outfile - output to file
     """
     for i in range(1, len(ct)+1):
         decrypted = decryptMessage(i, ct)
         flag = FindWord(decrypted)
 
         if flag is None and silent is False:
-            print('Failed to find: %s' % (decrypted))
+            output_fp("Failed to find: {}".format(decrypted), outfile, True)
         elif flag is not None:
-            print('Found word: ', decrypted)
+            output_fp("Found word: {}".format(decrypted))
             uinput = (input("Is this the correct plaintext? [y/n]: ")).lower()
             if (uinput != "" and uinput[0] == 'y'):
-                print("Key size: {}".format(i))
+                output_fp("Found word: {}".format(decrypted),outfile)
+                output_fp("Key size: {}\n".format(i), outfile)
                 return
-    input("No match found for: \"{}\"".format(ct))
+    output_fp("No match found for: \"{}\"\n".format(ct), outfile, True)
+
+def output_fp(msg, ofile = None, fp_out = False):
+    """
+    Print to standard out or to file.
+
+    msg - the messsage to output
+    ofile - file to output
+    fp_out - output to both
+    """
+    if ofile is None:
+        print(msg)
+    else:
+        ofile.write(msg + "\n")
+        if fp_out is True:
+            print(msg)
+    return
 
 if __name__ == "__main__":
     main()
