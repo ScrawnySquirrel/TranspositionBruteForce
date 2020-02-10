@@ -63,10 +63,12 @@ def brute_force_transpose(ct,silent = False, outfile = None, nointeract = False)
                 output_fp("Found word: {}".format(decrypted),outfile)
                 output_fp("Key size: {}".format(i), outfile)
                 if nointeract is False:
+                    output_fp("", outfile)
                     return
-    output_fp("", outfile)
     if foundmatch is False:
-        output_fp("No match found for: {}\n".format(ct), outfile, False if silent is True else True)
+        output_fp("No match found for: {}\n".format(ct), outfile, True)
+    else:
+        output_fp("", outfile)
 
 def output_fp(msg, ofile = None, fp_out = False):
     """
