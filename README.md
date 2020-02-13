@@ -57,8 +57,20 @@ python3 -B trbruteforce.py -c <ciphertext> -n
 > In conjunction with the `-s` argument, the `-n` argument is extremely helpful for users to review all possible matches at once.
 
 ## Running the tests
+### Encrypting Plaintexts
+In order to generate ciphertexts using the Transposition cipher, the `encrypt_pts.py` script can be used. It is an interactive program that continuously asks for the plaintext and the key to perform the encryption.  
+```
+encrypt_pts.py
+```
+The generated ciphertext is outputted to the screen. However by using the `-o` argument, the output can be saved to a text file.
+> The output file saves the ciphertexts in its own line without any mapping.
 
-
+### Decrypting Using Brute Force
+The `trbruteforce.py` program provides multiple way to handle inputs. By utilizing the file argument, running tests are easy.
+```
+python3 -B trbruteforce.py -i <ciphertextfile>
+```
+> The ciphertext file generated through `encrypt_pts.py` with the `-o` argument can be used.
 
 ## Author
 
